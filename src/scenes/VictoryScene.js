@@ -487,7 +487,8 @@ export class VictoryScene {
         
         // Add friend if romantic ending
         if (this.romanticEnding) {
-            this.sceneElements.push({
+            entities.push({
+                type: 'character',
                 data: this.friend,
                 drawFunction: (ctx, data) => this.drawHikingFriend(ctx, data),
                 sortY: this.friend.y // Use character feet position for sorting
