@@ -1,0 +1,25 @@
+{
+  "name": "campus-rush",
+  "version": "1.0.0",
+  "description": "A retro 8-bit vertical scrolling arcade game about navigating university life",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8000 -c-1",
+    "dev": "npx http-server -p 8000 -c-1 -o",
+    "predeploy": "echo 'Ready to deploy'",
+    "deploy": "gh-pages -d ."
+  },
+  "keywords": [
+    "game",
+    "html5",
+    "canvas",
+    "javascript",
+    "arcade"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "http-server": "^14.1.1"
+  }
+}

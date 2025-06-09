@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenure Dash</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div class="audio-notice" id="audioNotice" style="display:none;">
+        🔊 Click anywhere to enable sound effects!
+    </div>
+    <div id="gameContainer">
+        <div class="hud" id="mainHud">
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
+                <div>Tenure: <span id="tenure">0</span>% | Hearts: <span id="hearts">0</span></div>
+                <div>Level: <span id="level">1</span> | Time: <span id="timer">00:00.00</span></div>
+                <div>HP: <span id="hp">👣👣👣👣👣</span></div>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
+                <div id="powerupTimers">
+                    <span id="coffeeTimer" style="display: none;">☕ <span id="coffeeTime">0</span>s</span>
+                    <span id="glassesTimer" style="display: none;">👓 <span id="glassesTime">0</span>s</span>
+                    <span id="cheeseTimer" style="display: none; color: #FFD700;">🧀 <span id="cheeseTime">0</span>s</span>
+                </div>
+                <div>
+                    <span id="chopsticksDisplay" style="display: none;">🥢 x<span id="chopsticksCount">0</span></span>
+                    <span id="doorPassDisplay" style="display: none; margin-left: 15px;">🚪 x<span id="doorPassCount">0</span></span>
+                </div>
+            </div>
+        </div>
+        
+        <canvas id="gameCanvas" width="768" height="576"></canvas>
+        
+        <div class="controls">
+            <div style="white-space: pre-line;"></div>
+        </div>
+        
+        <div class="game-over" id="gameOver">
+            <h2>GAME OVER</h2>
+            <p>Tenure Progress: <span id="finalTenure">0</span>%</p>
+            <p>Hearts Collected: <span id="finalHearts">0</span></p>
+            <p>Press R to restart</p>
+        </div>
+    </div>
+    
+    <script type="module" src="src/main.js"></script>
+    <script type="module">
+import { CONTROL_INSTRUCTIONS } from './src/utils/Constants.js';
+
+function renderControlBox(instructions) {
+    // No box, just left-aligned lines
+    return instructions.join('\n');
+}
+
+const controlsDiv = document.querySelector('.controls > div');
+if (controlsDiv) {
+    controlsDiv.textContent = renderControlBox(CONTROL_INSTRUCTIONS);
+    controlsDiv.style.whiteSpace = 'pre-line';
+    controlsDiv.style.fontFamily = 'monospace';
+    controlsDiv.style.textAlign = 'left';
+    controlsDiv.style.padding = '0 0 0 15px'; 
+}
+</script>
+</body>
+</html>
