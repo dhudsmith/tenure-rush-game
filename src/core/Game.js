@@ -37,6 +37,14 @@ export class Game {
         this.eventBus.on('game.pause', () => {
             this.togglePause();
         });
+        
+        this.eventBus.on('game.victory.test', () => {
+            this.testVictoryScene();
+        });
+        
+        this.eventBus.on('game.victory.normal', () => {
+            this.testNormalVictoryScene();
+        });
     }
     
     start() {
@@ -149,6 +157,42 @@ export class Game {
         // Transition to victory scene with stats
         this.currentScene = new VictoryScene(this.canvas, stats);
         console.log('VictoryScene created and set as current scene');
+    }
+    
+    testVictoryScene() {
+        console.log('Testing victory scene with E+V combo shortcut');
+        this.state = GameState.VICTORY;
+        
+        // Create test stats for romantic ending (50+ hearts)
+        const testStats = {
+            tenure: 85,
+            hearts: 55, // This will trigger romantic ending
+            level: 5,
+            time: '05:32.15',
+            doorPassesUsed: 3
+        };
+        
+        console.log('Creating VictoryScene with test stats:', testStats);
+        this.currentScene = new VictoryScene(this.canvas, testStats);
+        console.log('Victory scene test complete');
+    }
+    
+    testNormalVictoryScene() {
+        console.log('Testing normal victory scene with E+N combo shortcut');
+        this.state = GameState.VICTORY;
+        
+        // Create test stats for normal ending (less than 50 hearts)
+        const testStats = {
+            tenure: 75,
+            hearts: 35, // This will trigger normal ending
+            level: 4,
+            time: '06:15.89',
+            doorPassesUsed: 2
+        };
+        
+        console.log('Creating VictoryScene with normal stats:', testStats);
+        this.currentScene = new VictoryScene(this.canvas, testStats);
+        console.log('Normal victory scene test complete');
     }
     
     restart() {

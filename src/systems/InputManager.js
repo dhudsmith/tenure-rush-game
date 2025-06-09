@@ -18,7 +18,22 @@ export class InputManager {
         
         this.keys[e.key] = true;
         
-        // Emit specific events
+        // Check for two-button combos first (E + other key)
+        if (this.isKeyPressed('e') || this.isKeyPressed('E')) {
+            switch(e.key.toLowerCase()) {
+                case 'd':
+                    this.eventBus.emit('input.dev.toggle');
+                    return; // Don't process further
+                case 'v':
+                    this.eventBus.emit('game.victory.test');
+                    return; // Don't process further
+                case 'n':
+                    this.eventBus.emit('game.victory.normal');
+                    return; // Don't process further
+            }
+        }
+        
+        // Regular single key events
         switch(e.key) {
             case 'ArrowLeft':
                 this.eventBus.emit('input.left.down');
@@ -45,14 +60,17 @@ export class InputManager {
             case 'R':
                 this.eventBus.emit('game.restart');
                 break;
-            case 'd':
-            case 'D':
-                this.eventBus.emit('input.dev.toggle');
-                break;
         }
         
         // Play button press sound for relevant keys, but skip ArrowUp and ArrowDown
         if (["p", "P", "r", "R"].includes(e.key)) {
+            if (window.gameInstance && window.gameInstance.currentScene && window.gameInstance.currentScene.audio) {
+                window.gameInstance.currentScene.audio.playButtonPress();
+            }
+        }
+        
+        // Play sound for combo keys too
+        if ((this.isKeyPressed('e') || this.isKeyPressed('E')) && ['d', 'v', 'n'].includes(e.key.toLowerCase())) {
             if (window.gameInstance && window.gameInstance.currentScene && window.gameInstance.currentScene.audio) {
                 window.gameInstance.currentScene.audio.playButtonPress();
             }

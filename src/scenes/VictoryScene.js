@@ -236,9 +236,10 @@ export class VictoryScene {
     }
     
     updateCharacterAnimation(deltaTime) {
+        const speed = 0.0015; // Progress speed along path per frame
+        
         // Move professor along the path
         if (this.professor.animationPhase === 'walking') {
-            const speed = 0.0015; // Progress speed along path per frame
             this.professor.pathProgress += speed;
             
             if (this.professor.pathProgress >= this.professor.targetProgress) {
