@@ -86,13 +86,13 @@ export const CalloutMessages = {
         "I submitted 10 grants last week!",
         "Multidisciplinary research is so important!",
     ],
-    MALE_FRIEND: [
+    FRIEND: [
         "Have a good day!",
         "Need a hug?",
         "Need some coffee?",
         "Good to see you!",
         "You've got this!",
-        "Hi there.",
+        "Hi there."
     ]
 };
 

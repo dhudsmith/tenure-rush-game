@@ -5,7 +5,9 @@
   "main": "index.html",
   "scripts": {
     "start": "npx http-server -p 8000 -c-1",
-    "dev": "npx http-server -p 8000 -c-1 -o"
+    "dev": "npx http-server -p 8000 -c-1 -o",
+    "predeploy": "echo 'Ready to deploy'",
+    "deploy": "gh-pages -d ."
   },
   "keywords": [
     "game",
@@ -17,6 +19,7 @@
   "author": "Your Name",
   "license": "MIT",
   "devDependencies": {
+    "gh-pages": "^6.3.0",
     "http-server": "^14.1.1"
   }
 }

@@ -92,7 +92,7 @@ export class AudioManager {
         this.playTone(800, 0.05, 'square', 0.3);
     }
 
-    playMaleFriendContact() {
+    playFriendContact() {
         this.playTone(440, 0.1, 'sine', 0.5);
         setTimeout(() => this.playTone(554, 0.1, 'sine', 0.5), 100);
         setTimeout(() => this.playTone(659, 0.15, 'sine', 0.6), 200);

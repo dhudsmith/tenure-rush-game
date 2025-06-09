@@ -152,7 +152,7 @@ export class VictoryScene {
         };
         
         if (this.romanticEnding) {
-            this.maleFriend = {
+            this.friend = {
                 x: this.width * 0.05,
                 y: this.height * 0.89,
                 pathProgress: 0.05, // Start slightly behind professor
@@ -253,31 +253,30 @@ export class VictoryScene {
             this.professor.y = pos.y;
         }
         
-        // Move male friend along the path if romantic ending
-        if (this.romanticEnding && this.maleFriend.animationPhase === 'walking') {
-            const speed = 0.0015; // Same speed as professor
-            this.maleFriend.pathProgress += speed;
-            
-            if (this.maleFriend.pathProgress >= this.maleFriend.targetProgress) {
-                this.maleFriend.pathProgress = this.maleFriend.targetProgress;
-                this.maleFriend.animationPhase = 'celebration';
-                this.maleFriend.celebrationTimer = 0;
+        // Move friend along the path if romantic ending
+        if (this.romanticEnding && this.friend.animationPhase === 'walking') {
+            this.friend.pathProgress += speed;
+            if (this.friend.pathProgress >= this.friend.targetProgress) {
+                this.friend.pathProgress = this.friend.targetProgress;
+                this.friend.animationPhase = 'celebration';
+                this.friend.celebrationTimer = 0;
             }
-            
-            // Update position based on path progress
-            const pos = this.getPositionOnTrail(this.maleFriend.pathProgress);
-            this.maleFriend.x = pos.x;
-            this.maleFriend.y = pos.y;
+            const pos = this.getPositionOnTrail(this.friend.pathProgress);
+            this.friend.x = pos.x;
+            this.friend.y = pos.y;
+        }
+        const friendCelebrating = !this.romanticEnding || this.friend.animationPhase === 'celebration';
+        if (this.romanticEnding && friendCelebrating) {
+            this.friend.celebrationTimer += deltaTime;
         }
         
         // Check if both characters are celebrating
         const professorCelebrating = this.professor.animationPhase === 'celebration';
-        const friendCelebrating = !this.romanticEnding || this.maleFriend.animationPhase === 'celebration';
         
         if (professorCelebrating && friendCelebrating) {
             this.professor.celebrationTimer += deltaTime;
             if (this.romanticEnding) {
-                this.maleFriend.celebrationTimer += deltaTime;
+                this.friend.celebrationTimer += deltaTime;
             }
             
             // After 3 seconds of celebration, show end screen
@@ -486,13 +485,12 @@ export class VictoryScene {
             sortY: this.professor.y // Use character feet position for sorting
         });
         
-        // Add male friend if romantic ending
+        // Add friend if romantic ending
         if (this.romanticEnding) {
-            entities.push({
-                type: 'character',
-                data: this.maleFriend,
-                drawFunction: (ctx, data) => this.drawHikingMaleFriend(ctx, data),
-                sortY: this.maleFriend.y // Use character feet position for sorting
+            this.sceneElements.push({
+                data: this.friend,
+                drawFunction: (ctx, data) => this.drawHikingFriend(ctx, data),
+                sortY: this.friend.y // Use character feet position for sorting
             });
         }
         
@@ -589,7 +587,7 @@ export class VictoryScene {
         ctx.fillRect(x + 1, y - 5 + celebrationY, 7, 8);
     }
     
-    drawHikingMaleFriend(ctx, character) {
+    drawHikingFriend(ctx, character) {
         const { x, y, width, height, animationPhase, celebrationTimer } = character;
         
         // Calculate celebration offset
