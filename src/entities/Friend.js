@@ -1,8 +1,8 @@
-// MaleFriend.js - Male friend entity
+// Friend.js - Friend entity
 import { EventBus } from '../utils/EventBus.js';
 import { getRandomCallout } from '../utils/Constants.js';
 
-export class MaleFriend {
+export class Friend {
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -42,9 +42,9 @@ export class MaleFriend {
         if (this.contacted) return;
         
         this.contacted = true;
-        this.eventBus.emit('malefriend.contacted');
+        this.eventBus.emit('friend.contacted');
         this.eventBus.emit('callout', {
-            text: getRandomCallout('MALE_FRIEND'),
+            text: getRandomCallout('FRIEND'),
             x: this.x + 15,
             y: this.y,
             color: "#FF69B4"

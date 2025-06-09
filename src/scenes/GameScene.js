@@ -2,7 +2,7 @@
 import { Player } from '../entities/Player.js';
 import { Door } from '../entities/Door.js';
 import { PowerUp } from '../entities/PowerUp.js';
-import { MaleFriend } from '../entities/MaleFriend.js';
+import { Friend } from '../entities/Friend.js';
 import CC from '../entities/CC.js';
 import { PhysicsSystem } from '../systems/PhysicsSystem.js';
 import { PowerUpSystem } from '../systems/PowerUpSystem.js';
@@ -43,7 +43,7 @@ export class GameScene {
         this.player.reset(); // Ensure player starts with full HP and reset state
         this.doors = [];
         this.powerups = [];
-        this.maleFriends = [];
+        this.friends = [];
         this.hearts = [];
         this.callouts = [];
         this.ccs = []; // CC enemies
@@ -117,13 +117,13 @@ export class GameScene {
             }
         });
         
-        // Male friend events
-        this.eventBus.on('malefriend.contacted', () => {
+        // Friend events
+        this.eventBus.on('friend.contacted', () => {
             this.heartsCollected++;
             this.player.doorPasses++;
             this.spawnHeartAnimation();
             this.hud.updateAll(this.getStats());
-            this.audio.playMaleFriendContact(); // Play sound on male friend contact
+            this.audio.playFriendContact(); // Play sound on friend contact
         });
         
         // Input events
@@ -208,7 +208,7 @@ export class GameScene {
         this.player.update(deltaTime);
         this.updateDoors();
         this.updatePowerups();
-        this.updateMaleFriends();
+        this.updateFriends();
         this.updateCCs();
         this.updateHearts();
         this.updateCallouts();
@@ -233,7 +233,7 @@ export class GameScene {
 
         this.friendSpawnTimer++;
         if (this.friendSpawnTimer >= this.friendSpawnInterval) {
-            this.spawnMaleFriend();
+            this.spawnFriend();
             this.friendSpawnTimer = 0;
             this.friendSpawnInterval = this.getRandomFriendInterval();
         }
@@ -276,7 +276,7 @@ export class GameScene {
         
         // Other entities
         this.powerups.forEach(powerup => powerup.render(ctx));
-        this.maleFriends.forEach(friend => friend.render(ctx));
+        this.friends.forEach(friend => friend.render(ctx));
         this.ccs.forEach(cc => cc.render(ctx));
         this.player.render(ctx);
         
@@ -322,13 +322,13 @@ export class GameScene {
         }
     }
     
-    updateMaleFriends() {
-        for (let i = this.maleFriends.length - 1; i >= 0; i--) {
-            const friend = this.maleFriends[i];
+    updateFriends() {
+        for (let i = this.friends.length - 1; i >= 0; i--) {
+            const friend = this.friends[i];
             friend.update(this.scrollSpeed);
             
             if (friend.y > this.height + 50) {
-                this.maleFriends.splice(i, 1);
+                this.friends.splice(i, 1);
             }
         }
     }
@@ -412,8 +412,8 @@ export class GameScene {
             }
         }
         
-        // Player-MaleFriend collisions
-        for (const friend of this.maleFriends) {
+        // Player-Friend collisions
+        for (const friend of this.friends) {
             if (!friend.contacted && this.physicsSystem.checkCollision(this.player, friend)) {
                 friend.contact();
                 break;
@@ -461,12 +461,12 @@ export class GameScene {
         this.powerups.push(powerup);
     }
     
-    spawnMaleFriend() {
-        const friend = new MaleFriend(
+    spawnFriend() {
+        const friend = new Friend(
             Math.random() * (this.width - 40),
             -40
         );
-        this.maleFriends.push(friend);
+        this.friends.push(friend);
     }
     
     spawnCC() {
@@ -508,8 +508,8 @@ export class GameScene {
             timer: 60
         });
         
-        // Find the male friend that was just contacted
-        const friend = this.maleFriends.find(f => f.contacted && f.y < this.player.y + 50);
+        // Find the friend that was just contacted
+        const friend = this.friends.find(f => f.contacted && f.y < this.player.y + 50);
         if (friend) {
             this.hearts.push({
                 x: friend.x + 15,
